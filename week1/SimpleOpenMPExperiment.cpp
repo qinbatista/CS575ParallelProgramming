@@ -1,4 +1,4 @@
-//g++ -Xpreprocessor -fopenmp SimpleOpenMPExperiment.cpp -lomp -o SimpleOpenMPExperiment -DNUMT=6 -DNUMS=12
+//g++ -Xpreprocessor -fopenmp SimpleOpenMPExperiment.cpp -lomp -o SimpleOpenMPExperiment -DNUMT=4
 #include <omp.h>
 #include <stdio.h>
 #include <math.h>
@@ -7,7 +7,7 @@
 #define NUMT    4// number of threads to use
 #endif
 
-#define SIZE    128*128
+#define SIZE    128*128*128
 
 #define NUMTRIES    10// how many times to run the timing -- you get to decide
 
