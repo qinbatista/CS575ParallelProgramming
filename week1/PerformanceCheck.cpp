@@ -1,4 +1,4 @@
-//clang -Xpreprocessor -fopenmp PerformanceCheck.cpp -lomp -o PerformanceCheck -DNUMT=6 -DNUMS=12
+//g++ -Xpreprocessor -fopenmp PerformanceCheck.cpp -lomp -o PerformanceCheck -DNUMT=6 -DNUMS=12
 #include<omp.h>
 #include <stdio.h>
 #include <stdlib.h>
