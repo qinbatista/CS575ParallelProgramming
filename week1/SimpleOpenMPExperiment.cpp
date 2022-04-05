@@ -57,3 +57,4 @@ main( )
 	//        %d stands for "decimal integer", not "double"
 	return 0;
 }
+void list_append_float(list
