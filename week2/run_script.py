@@ -6,9 +6,9 @@ def StartTest():
         for trail_number in [1,10,100,1000,10000,100000,500000,1000000]:
 
             if platform == "linux" or platform == "linux2":
-                os.system(f"g++  -fopenmp montecarlo.cpp -o montecarlo -DNUMT={thread_number} -DNUMTRIALS={trail_number}")
+                os.system(f"g++ -fopenmp montecarlo.cpp -o montecarlo -DNUMT={thread_number} -DNUMTRIALS={trail_number}")
             elif platform == "darwin":
-                os.system(f"g++ -Xpreprocessor -lomp -fopenmp montecarlo.cpp  -o montecarlo -DNUMT={thread_number} -DNUMTRIALS={trail_number}")
+                os.system(f"g++ -Xpreprocessor -fopenmp -lomp  montecarlo.cpp  -o montecarlo  -DNUMT={thread_number} -DNUMTRIALS={trail_number}")
 
             p = subprocess.Popen(f"./montecarlo",  stderr= open("./proj1.csv",'a'), universal_newlines=True, shell=True)
             p.wait()
