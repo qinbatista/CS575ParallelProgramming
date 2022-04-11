@@ -10,7 +10,7 @@ def StartTest():
             elif platform == "darwin":
                 os.system(f"g++ -Xpreprocessor -fopenmp -lomp  main.cpp  -o main  -DNUMT={thread_number} -DNUMTRIALS={trail_number}")
 
-            p = subprocess.Popen(f"./main",  stderr= open("./proj1.csv",'a'), universal_newlines=True, shell=True)
+            p = subprocess.Popen(f"./main",  stderr= open("./result.csv",'a'), universal_newlines=True, shell=True)
             p.wait()
 if __name__ == '__main__':
     StartTest()
