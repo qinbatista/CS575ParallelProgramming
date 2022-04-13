@@ -7,7 +7,7 @@
 #define YMAX      1.
 
 #ifndef NUMNODES
-#define NUMNODES  10000
+#define NUMNODES  100
 #endif
 
 #ifndef NUMT
@@ -46,7 +46,7 @@ int main( int argc, char *argv[ ] )
     double time1 = omp_get_wtime( );
     volume = volume- fullTileArea; // reduce 4 corner's areas 0.25 *fullTileArea *4
     volume = volume- (NUMNODES-1)*fullTileArea*2; // reduce 4 edge's areas (n-1)*(0.5*fullTileArea)*2
-    std::cout <<"NUMNODES="<< NUMNODES <<" NUMT="<<NUMT<< " volume=" << volume<<" megatrials/sec="<<(double)NUMNODES*NUMNODES / ( time1 - time0 ) / 1000000. << std::endl;
+    std::cout <<"NUMNODES= "<< NUMNODES <<" NUMT= "<<NUMT<< " volume= " << volume<<" megatrials/sec= "<<(double)NUMNODES*NUMNODES / ( time1 - time0 ) / 1000000. << std::endl;
 }
 
 float Height( int iu, int iv )	// iu,iv = 0 .. NUMNODES-1
