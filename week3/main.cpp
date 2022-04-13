@@ -1,6 +1,7 @@
 
 #include<iostream>
 #include <omp.h>
+#include<math.h>
 #define XMIN     -1.
 #define XMAX      1.
 #define YMIN     -1.
@@ -21,6 +22,7 @@ const float R = 1.2f;
 
 int main( int argc, char *argv[ ] )
 {
+    // std::cout <<"NUMNODES,NUMT,volume,megatrials/sec"<< std::endl;
     // . . .
     omp_set_num_threads(NUMT);
     // the area of a single full-sized tile:
@@ -46,7 +48,7 @@ int main( int argc, char *argv[ ] )
     double time1 = omp_get_wtime( );
     volume = volume- fullTileArea; // reduce 4 corner's areas 0.25 *fullTileArea *4
     volume = volume- (NUMNODES-1)*fullTileArea*2; // reduce 4 edge's areas (n-1)*(0.5*fullTileArea)*2
-    std::cout <<"NUMNODES= "<< NUMNODES <<" NUMT= "<<NUMT<< " volume= " << volume<<" megatrials/sec= "<<(double)NUMNODES*NUMNODES / ( time1 - time0 ) / 1000000. << std::endl;
+    std::cout <<""<< NUMNODES <<","<<NUMT<< "," << volume<<","<<(double)NUMNODES*NUMNODES / ( time1 - time0 ) / 1000000. << std::endl;
 }
 
 float Height( int iu, int iv )	// iu,iv = 0 .. NUMNODES-1
