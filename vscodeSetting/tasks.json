@@ -9,6 +9,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "-Xpreprocessor",
+                "-I/opt/homebrew/Cellar/libomp/14.0.0/include",
                 "-fopenmp",
                 "-L/opt/homebrew/opt/libomp/lib",
                 " -lomp",

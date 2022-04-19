@@ -1,4 +1,4 @@
-
+//g++ -Xpreprocessor -I/opt/homebrew/Cellar/libomp/14.0.0/include -fopenmp   -L/opt/homebrew/Cellar/libomp/14.0.0/lib -lomp  *.cpp -o main
 #include<iostream>
 #include <omp.h>
 #include<math.h>
