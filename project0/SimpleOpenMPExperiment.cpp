@@ -1,4 +1,4 @@
-//g++ -Xpreprocessor -fopenmp SimpleOpenMPExperiment.cpp -lomp -o SimpleOpenMPExperiment -DNUMT=4
+// g++ -Xpreprocessor -fopenmp  -L/usr/local/lib -lomp  *.cpp -o main -DNUMT=4
 #include <omp.h>
 #include <stdio.h>
 #include <math.h>
