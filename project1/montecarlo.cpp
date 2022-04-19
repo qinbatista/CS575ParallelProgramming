@@ -1,4 +1,4 @@
-//g++ -Xpreprocessor -fopenmp montecarlo.cpp -lomp -o montecarlo -DNUMTRIES = 100 -DNUMS=6
+// g++ -Xpreprocessor -fopenmp -I/usr/local/include -L/opt/homebrew/opt/libomp/lib -lomp  montecarlo.cpp -o main
 #include <stdio.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
