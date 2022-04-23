@@ -3,13 +3,13 @@
 #include "GameParellelBarrier.h"
 // starting date and time:
 int NowMonth = 0;   // 0 - 11
-int NowYear = 2022; // 2022 - 2027
+int NowYear = 2021; // 2022 - 2027
 // starting state (feel free to change this if you want):
 float NowPrecip; // inches of rain per month
 float NowTemp;   // temperature this month
 // starting state (feel free to change this if you want):
-float NowHeight=1; // grain height in inches
-int NowNumDeer=1;  // number of deer in the current population
+float NowHeight = 1; // grain height in inches
+int NowNumDeer = 1;  // number of deer in the current population
 
 const float GRAIN_GROWS_PER_MONTH = 9.0;
 const float ONE_DEER_EATS_PER_MONTH = 1.0;
@@ -26,7 +26,7 @@ const float MIDTEMP = 40.0;
 const float MIDPRECIP = 10.0;
 
 unsigned int seed = 0;
-
+float dear_starving = 0.0;
 void TemperatureAndPrecipitation()
 {
     float ang = (30. * (float)NowMonth + 15.) * (M_PI / 180.);
@@ -56,14 +56,19 @@ void Deer()
     {
         float tempFactor = exp(-SQR((NowTemp - MIDTEMP) / 10.));
         float precipFactor = exp(-SQR((NowPrecip - MIDPRECIP) / 10.));
-        // std::cout << "Deer" << std::endl;
+
+        int nextNumDeer = NowNumDeer;
+        int carryingCapacity = (int)(NowHeight);
+        if (nextNumDeer < carryingCapacity)
+            nextNumDeer++;
+        else if (nextNumDeer > carryingCapacity)
+            nextNumDeer--;
+        if (nextNumDeer < 0)
+            nextNumDeer = 0;
+            // std::cout << "Deer" << std::endl;
 #pragma omp barrier
         WaitBarrier();
-        float nextHeight = NowHeight;
-        nextHeight += tempFactor * precipFactor * GRAIN_GROWS_PER_MONTH;
-        nextHeight -= (float)NowNumDeer * ONE_DEER_EATS_PER_MONTH;
-        if (nextHeight < 0)
-            nextHeight = 0;
+        NowNumDeer = nextNumDeer;
 #pragma omp barrier
         WaitBarrier();
 #pragma omp barrier
@@ -76,17 +81,15 @@ void Grain()
     {
         float tempFactor = exp(-SQR((NowTemp - MIDTEMP) / 10.));
         float precipFactor = exp(-SQR((NowPrecip - MIDPRECIP) / 10.));
-        // std::cout << "Grain" << std::endl;
+
+        float nextHeight = NowHeight;
+        nextHeight += tempFactor * precipFactor * GRAIN_GROWS_PER_MONTH;
+        nextHeight -= (float)NowNumDeer * ONE_DEER_EATS_PER_MONTH;
+        if (nextHeight < 0.)
+            nextHeight = 0.;
 #pragma omp barrier
         WaitBarrier();
-        int nextNumDeer = NowNumDeer;
-        int carryingCapacity = (int)(NowHeight);
-        if (nextNumDeer < carryingCapacity)
-            nextNumDeer++;
-        else if (nextNumDeer > carryingCapacity)
-            nextNumDeer--;
-        if (nextNumDeer < 0)
-            nextNumDeer = 0;
+        NowHeight = nextHeight;
 
 #pragma omp barrier
         WaitBarrier();
@@ -103,8 +106,8 @@ void Watcher()
         WaitBarrier();
 #pragma omp barrier
         WaitBarrier();
-        std::cout << "NowYear," << NowYear << ","
-                  << "NowMonth," << NowMonth << std::endl;
+        // std::cout <<"NowMonth," <<(NowYear-2021)*12+ NowMonth+1 << ",    NowHeight," << NowHeight << ",  NowNumDeer," << NowNumDeer << ",    NowTemp," <<(5./9.)*(NowTemp-32) <<",NowPrecip,"<<NowPrecip*2.54<< std::endl;
+        std::cout <<(NowYear-2021)*12+ NowMonth+1 << "," << NowHeight << "," << NowNumDeer << "," <<(5./9.)*(NowTemp-32) <<","<<NowPrecip*2.54<<","<<dear_starving<< std::endl;
         TemperatureAndPrecipitation();
 #pragma omp barrier
         WaitBarrier();
@@ -121,5 +124,11 @@ void MyAgent()
         WaitBarrier();
 #pragma omp barrier
         WaitBarrier();
+        float less_eat_percent;
+        if((10.0-NowNumDeer)<5.0)
+            less_eat_percent = (10.0-NowNumDeer)/10.0;
+        else
+            less_eat_percent = 0.5;
+        dear_starving = ONE_DEER_EATS_PER_MONTH*less_eat_percent;
     }
 }

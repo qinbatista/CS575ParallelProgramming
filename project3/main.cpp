@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 #pragma omp section
         {
             // std::cout << "MyAgent" << std::endl;
-            MyAgent(); // your own
+            MyAgent(); //if more deer, deers are starving and eat less, but they are surving and population can hold.
         }
     } // implied barrier -- all functions must return in order
       // to allow any of them to get past here
