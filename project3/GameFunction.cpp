@@ -120,7 +120,7 @@ void MyAgent()
     {
         // std::cout << "Watcher" << std::endl;
         int NextHunter = NowHunter;
-        if(NowNumDeer>=5)
+        if(NowNumDeer>=3)
         {
             NextHunter++;
         }
