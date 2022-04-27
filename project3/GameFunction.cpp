@@ -119,22 +119,22 @@ void MyAgent()
     while (NowYear < 2027)
     {
         // std::cout << "Watcher" << std::endl;
-        int NextHunter = NowHunter;
-        if(NowNumDeer>=3)
-        {
-            NextHunter++;
-        }
-        else
-        {
-            NextHunter--;
-        }
-        if(NextHunter<0)
-        {
-            NextHunter=0;
-        }
+        // int NextHunter = NowHunter;
+        // if(NowNumDeer>=3)
+        // {
+        //     NextHunter++;
+        // }
+        // else
+        // {
+        //     NextHunter--;
+        // }
+        // if(NextHunter<0)
+        // {
+        //     NextHunter=0;
+        // }
 #pragma omp barrier
         WaitBarrier();
-        NowHunter = NextHunter;
+        // NowHunter = NextHunter;
 #pragma omp barrier
         WaitBarrier();
 
