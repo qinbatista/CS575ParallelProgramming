@@ -10,7 +10,7 @@ float NowTemp;   // temperature this month
 // starting state (feel free to change this if you want):
 float NowHeight = 1; // grain height in inches
 int NowNumDeer = 1;  // number of deer in the current population
-
+int NowHunter = 0;   // number of hunters in the current population
 const float GRAIN_GROWS_PER_MONTH = 9.0;
 const float ONE_DEER_EATS_PER_MONTH = 1.0;
 
@@ -63,6 +63,7 @@ void Deer()
             nextNumDeer++;
         else if (nextNumDeer > carryingCapacity)
             nextNumDeer--;
+        nextNumDeer = nextNumDeer-NowHunter;
         if (nextNumDeer < 0)
             nextNumDeer = 0;
             // std::cout << "Deer" << std::endl;
@@ -107,7 +108,7 @@ void Watcher()
 #pragma omp barrier
         WaitBarrier();
         // std::cout <<"NowMonth," <<(NowYear-2021)*12+ NowMonth+1 << ",    NowHeight," << NowHeight << ",  NowNumDeer," << NowNumDeer << ",    NowTemp," <<(5./9.)*(NowTemp-32) <<",NowPrecip,"<<NowPrecip*2.54<< std::endl;
-        std::cout <<(NowYear-2021)*12+ NowMonth+1 << "," << NowHeight << "," << NowNumDeer << "," <<(5./9.)*(NowTemp-32) <<","<<NowPrecip*2.54<<","<<dear_starving<< std::endl;
+        std::cout <<(NowYear-2021)*12+ NowMonth+1 << "," << NowHeight << "," << NowNumDeer << "," <<(5./9.)*(NowTemp-32) <<","<<NowPrecip*2.54<<","<<NowHunter<< std::endl;
         TemperatureAndPrecipitation();
 #pragma omp barrier
         WaitBarrier();
@@ -118,17 +119,26 @@ void MyAgent()
     while (NowYear < 2027)
     {
         // std::cout << "Watcher" << std::endl;
-#pragma omp barrier
-        WaitBarrier();
-#pragma omp barrier
-        WaitBarrier();
-#pragma omp barrier
-        WaitBarrier();
-        float less_eat_percent;
-        if((10.0-NowNumDeer)<5.0)
-            less_eat_percent = (10.0-NowNumDeer)/10.0;
+        int NextHunter = NowHunter;
+        if(NowNumDeer>=5)
+        {
+            NextHunter++;
+        }
         else
-            less_eat_percent = 0.5;
-        dear_starving = ONE_DEER_EATS_PER_MONTH*less_eat_percent;
+        {
+            NextHunter--;
+        }
+        if(NextHunter<0)
+        {
+            NextHunter=0;
+        }
+#pragma omp barrier
+        WaitBarrier();
+        NowHunter = NextHunter;
+#pragma omp barrier
+        WaitBarrier();
+
+#pragma omp barrier
+        WaitBarrier();
     }
 }
