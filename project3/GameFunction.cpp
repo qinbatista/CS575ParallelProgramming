@@ -118,7 +118,7 @@ void MyAgent()
 {
     while (NowYear < 2027)
     {
-        std::cout << "Watcher" << std::endl;
+        // std::cout << "Watcher" << std::endl;
         int NextHunter = NowHunter;
         if(NowNumDeer>=3)
         {
