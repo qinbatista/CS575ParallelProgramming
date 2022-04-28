@@ -110,21 +110,26 @@ main( int argc, char *argv[ ] )
 }
 
 
-void
-NonSimdMul( float *A, float *B, float *C, int n )
+void NonSimdMul( float *A, float *B, float *C, int n )
 {
-	// ?????
+	for(int i =0 ;i<n;i++)
+    {
+        C[i] = A[i] * B[i];
+    }
 }
 
-float
-NonSimdMulSum( float *A, float *B, int n )
+float NonSimdMulSum( float *A, float *B, int n )
 {
-	// ?????
+    float result = 0;
+    for(int i =0 ;i<n;i++)
+    {
+        result = result+ A[i] * B[i];
+    }
+    return result;
 }
 
 
-void
-SimdMul( float *a, float *b,   float *c,   int len )
+void SimdMul( float *a, float *b,   float *c,   int len )
 {
 	int limit = ( len/SSE_WIDTH ) * SSE_WIDTH;
 	__asm
@@ -158,8 +163,7 @@ SimdMul( float *a, float *b,   float *c,   int len )
 
 
 
-float
-SimdMulSum( float *a, float *b, int len )
+float SimdMulSum( float *a, float *b, int len )
 {
 	float sum[4] = { 0., 0., 0., 0. };
 	int limit = ( len/SSE_WIDTH ) * SSE_WIDTH;
