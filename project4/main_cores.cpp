@@ -33,8 +33,10 @@ int
 main( int argc, char *argv[ ] )
 {
     int ARRAYSIZE= 0;
-    int NUMT = 0;
-    for(int size = 1; size<1000;size=size+10)
+    int NUMT = 4;
+    for(int thread =1 ; thread<=NUMT; thread++)
+    {
+    for(int size = 1; size<500;size=size+10)
     {
         ARRAYSIZE = 1024*size;
         ALIGNED float A[ARRAYSIZE];
@@ -45,7 +47,7 @@ main( int argc, char *argv[ ] )
             A[i] = sqrtf( (float)(i+1) );
             B[i] = sqrtf( (float)(i+1) );
         }
-
+        fprintf( stderr, "%4d,\t", thread );
         fprintf( stderr, "%12d,\t", ARRAYSIZE );
 
         double maxPerformance = 0.;
@@ -62,8 +64,9 @@ main( int argc, char *argv[ ] )
         fprintf( stderr, "N,%10.2lf,\t", megaMults );
         double mmn = megaMults;
 
-        int NUM_ELEMENTS_PER_CORE = ARRAYSIZE/NUMT;
+        int NUM_ELEMENTS_PER_CORE = ARRAYSIZE/thread;
         maxPerformance = 0.;
+        omp_set_num_threads(thread);
         for( int t = 0; t < NUMTRIES; t++ )
         {
             double time0 = omp_get_wtime( );
@@ -73,7 +76,7 @@ main( int argc, char *argv[ ] )
                 int first = thisThread * NUM_ELEMENTS_PER_CORE;
                 SimdMul( &A[first], &B[first], &C[first], NUM_ELEMENTS_PER_CORE );
             }
-            SimdMul( A, B, C, ARRAYSIZE );
+            // SimdMul( A, B, C, ARRAYSIZE );
 
 
             double time1 = omp_get_wtime( );
@@ -121,6 +124,7 @@ main( int argc, char *argv[ ] )
         fprintf( stderr, "(,%6.2lf,)\n", speedup );
         //fprintf( stderr, "[ %8.1f , %8.1f , %8.1f ]\n", C[ARRAYSIZE-1], sumn, sums );
         }
+    }
 	return 0;
 }
 
