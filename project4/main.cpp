@@ -7,6 +7,7 @@
 #include <sys/resource.h>
 #include <omp.h>
 
+
 // SSE stands for Streaming SIMD Extensions
 
 #define SSE_WIDTH	4
@@ -15,13 +16,11 @@
 
 #define NUMTRIES	100
 
-#ifndef ARRAYSIZE
-#define ARRAYSIZE	1024*1024
-#endif
+// #ifndef ARRAYSIZE
+// #define ARRAYSIZE	1000
+// #endif
 
-ALIGNED float A[ARRAYSIZE];
-ALIGNED float B[ARRAYSIZE];
-ALIGNED float C[ARRAYSIZE];
+
 
 
 void	SimdMul(    float *, float *,  float *, int );
@@ -33,79 +32,86 @@ float	NonSimdMulSum( float *, float *, int );
 int
 main( int argc, char *argv[ ] )
 {
-	for( int i = 0; i < ARRAYSIZE; i++ )
-	{
-		A[i] = sqrtf( (float)(i+1) );
-		B[i] = sqrtf( (float)(i+1) );
-	}
+    int ARRAYSIZE= 0;
+    for(int size = 1; size<1000;size=size+10)
+    {
+        ARRAYSIZE = 1024*size;
+        ALIGNED float A[ARRAYSIZE];
+        ALIGNED float B[ARRAYSIZE];
+        ALIGNED float C[ARRAYSIZE];
+        for( int i = 0; i < ARRAYSIZE; i++ )
+        {
+            A[i] = sqrtf( (float)(i+1) );
+            B[i] = sqrtf( (float)(i+1) );
+        }
 
-	fprintf( stderr, "%12d\t", ARRAYSIZE );
+        fprintf( stderr, "%12d,\t", ARRAYSIZE );
 
-	double maxPerformance = 0.;
-	for( int t = 0; t < NUMTRIES; t++ )
-	{
-		double time0 = omp_get_wtime( );
-		NonSimdMul( A, B, C, ARRAYSIZE );
-		double time1 = omp_get_wtime( );
-		double perf = (double)ARRAYSIZE / (time1 - time0);
-		if( perf > maxPerformance )
-			maxPerformance = perf;
-	}
-	double megaMults = maxPerformance / 1000000.;
-	fprintf( stderr, "N %10.2lf\t", megaMults );
-	double mmn = megaMults;
-
-
-	maxPerformance = 0.;
-	for( int t = 0; t < NUMTRIES; t++ )
-	{
-		double time0 = omp_get_wtime( );
-		SimdMul( A, B, C, ARRAYSIZE );
-		double time1 = omp_get_wtime( );
-		double perf = (double)ARRAYSIZE / (time1 - time0);
-		if( perf > maxPerformance )
-			maxPerformance = perf;
-	}
-	megaMults = maxPerformance / 1000000.;
-	fprintf( stderr, "S %10.2lf\t", megaMults );
-	double mms = megaMults;
-	double speedup = mms/mmn;
-	fprintf( stderr, "(%6.2lf)\t", speedup );
+        double maxPerformance = 0.;
+        for( int t = 0; t < NUMTRIES; t++ )
+        {
+            double time0 = omp_get_wtime( );
+            NonSimdMul( A, B, C, ARRAYSIZE );
+            double time1 = omp_get_wtime( );
+            double perf = (double)ARRAYSIZE / (time1 - time0);
+            if( perf > maxPerformance )
+                maxPerformance = perf;
+        }
+        double megaMults = maxPerformance / 1000000.;
+        fprintf( stderr, "N,%10.2lf,\t", megaMults );
+        double mmn = megaMults;
 
 
-	maxPerformance = 0.;
-	float sumn, sums;
-	for( int t = 0; t < NUMTRIES; t++ )
-	{
-		double time0 = omp_get_wtime( );
-		sumn = NonSimdMulSum( A, B, ARRAYSIZE );
-		double time1 = omp_get_wtime( );
-		double perf = (double)ARRAYSIZE / (time1 - time0);
-		if( perf > maxPerformance )
-			maxPerformance = perf;
-	}
-	double megaMultAdds = maxPerformance / 1000000.;
-	fprintf( stderr, "N %10.2lf\t", megaMultAdds );
-	mmn = megaMultAdds;
+        maxPerformance = 0.;
+        for( int t = 0; t < NUMTRIES; t++ )
+        {
+            double time0 = omp_get_wtime( );
+            SimdMul( A, B, C, ARRAYSIZE );
+            double time1 = omp_get_wtime( );
+            double perf = (double)ARRAYSIZE / (time1 - time0);
+            if( perf > maxPerformance )
+                maxPerformance = perf;
+        }
+        megaMults = maxPerformance / 1000000.;
+        fprintf( stderr, "S,%10.2lf,\t", megaMults );
+        double mms = megaMults;
+        double speedup = mms/mmn;
+        fprintf( stderr, "(,%6.2lf,)\t", speedup );
 
 
-	maxPerformance = 0.;
-	for( int t = 0; t < NUMTRIES; t++ )
-	{
-		double time0 = omp_get_wtime( );
-		sums = SimdMulSum( A, B, ARRAYSIZE );
-		double time1 = omp_get_wtime( );
-		double perf = (double)ARRAYSIZE / (time1 - time0);
-		if( perf > maxPerformance )
-			maxPerformance = perf;
-	}
-	megaMultAdds = maxPerformance / 1000000.;
-	fprintf( stderr, "S %10.2lf\t", megaMultAdds );
-	mms = megaMultAdds;
-	speedup = mms/mmn;
-	fprintf( stderr, "(%6.2lf)\n", speedup );
-	//fprintf( stderr, "[ %8.1f , %8.1f , %8.1f ]\n", C[ARRAYSIZE-1], sumn, sums );
+        maxPerformance = 0.;
+        float sumn, sums;
+        for( int t = 0; t < NUMTRIES; t++ )
+        {
+            double time0 = omp_get_wtime( );
+            sumn = NonSimdMulSum( A, B, ARRAYSIZE );
+            double time1 = omp_get_wtime( );
+            double perf = (double)ARRAYSIZE / (time1 - time0);
+            if( perf > maxPerformance )
+                maxPerformance = perf;
+        }
+        double megaMultAdds = maxPerformance / 1000000.;
+        fprintf( stderr, "N,%10.2lf,\t", megaMultAdds );
+        mmn = megaMultAdds;
 
+
+        maxPerformance = 0.;
+        for( int t = 0; t < NUMTRIES; t++ )
+        {
+            double time0 = omp_get_wtime( );
+            sums = SimdMulSum( A, B, ARRAYSIZE );
+            double time1 = omp_get_wtime( );
+            double perf = (double)ARRAYSIZE / (time1 - time0);
+            if( perf > maxPerformance )
+                maxPerformance = perf;
+        }
+        megaMultAdds = maxPerformance / 1000000.;
+        fprintf( stderr, "S,%10.2lf,\t", megaMultAdds );
+        mms = megaMultAdds;
+        speedup = mms/mmn;
+        fprintf( stderr, "(,%6.2lf,)\n", speedup );
+        //fprintf( stderr, "[ %8.1f , %8.1f , %8.1f ]\n", C[ARRAYSIZE-1], sumn, sums );
+        }
 	return 0;
 }
 
