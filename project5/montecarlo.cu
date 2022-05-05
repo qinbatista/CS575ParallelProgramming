@@ -82,9 +82,9 @@ __device__ float Radians(float d)
 
 __global__ void MonteCarlo(IN float *dtxs, IN float *dtys, IN float *dtxvs, IN float *dsvs, IN float *dsths, IN float *dhalflens, OUT int *dhits)
 {
-    unsigned int numItems = blockDim.x;
-    unsigned int wgNum = blockIdx.x;
-    unsigned int tnum = threadIdx.x;
+    // unsigned int numItems = blockDim.x;
+    // unsigned int wgNum = blockIdx.x;
+    // unsigned int tnum = threadIdx.x;
     unsigned int gid = blockIdx.x * blockDim.x + threadIdx.x;
 
     dhits[gid] = 0;
