@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
     double secondsTotal = 0.001 * (double)msecTotal;
     double trialsPerSecond = (float)NUMTRIALS / secondsTotal;
     double megaTrialsPerSecond = trialsPerSecond / 1000000.;
-    fprintf(stderr, "Number of Trials = %10d, Blocksize = %8d, MegaTrials/Second = %10.4lf, Probability = %6.2f%%\n",
+    fprintf(stderr, "NumberofTrials=,%10d,Blocksize=,%8d,MegaTrials/Second=,%10.4lf,Probability=,%6.2f%%,\n",
             NUMTRIALS, BLOCKSIZE, megaTrialsPerSecond, probability);
 
     // clean up memory:
