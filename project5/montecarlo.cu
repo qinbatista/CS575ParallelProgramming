@@ -104,7 +104,7 @@ __global__ void MonteCarlo(IN float *dtxs, IN float *dtys, IN float *dtxvs, IN f
     float truckx = tx + txv * t;
     // how far the snowball has moved in x in that amount of time:
     float sbx = svx * t;
-    if (fabs(truckx - sbx) < 20)
+    if (fabs(truckx - sbx) < 30)
     {
         dhits[gid] = 1;
     }
