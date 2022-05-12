@@ -1,6 +1,7 @@
+//g++ -o printinfo printinfo.cpp /usr/local/apps/cuda/10.1/lib64/libOpenCL.so.1.1 -lm -fopenmp -DMAIN_PROGRAM_TO_TEST
 #include <stdio.h>
 #include <string.h>
-#include "cl.h"
+#include "CL/cl.h"
 
 // function prototypes:
 void	PrintOpenclInfo();
