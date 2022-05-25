@@ -237,7 +237,8 @@ DoOneLocalAutocorrelation( int me )
 {
 	MPI_Status status;
 
-	if( DEBUG )	fprintf( stderr, "Node %3d entered DoOneLocalAutocorrelation( )\n", me );
+	// if( DEBUG )
+    // fprintf( stderr, "Node %3d entered DoOneLocalAutocorrelation( )\n", me );
 
 	for( int s = 0; s < MAXSHIFTS; s++ )
 	{

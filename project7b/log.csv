@@ -1,0 +1,16 @@
+  2 processors,    8388608 elements,    600.66 mega-autocorrelations computed per second
+  4 processors,    8388608 elements,   1208.11 mega-autocorrelations computed per second
+  6 processors,    8388608 elements,   1797.58 mega-autocorrelations computed per second
+  8 processors,    8388608 elements,   2388.65 mega-autocorrelations computed per second
+ 10 processors,    8388608 elements,   2910.03 mega-autocorrelations computed per second
+ 12 processors,    8388608 elements,   3473.59 mega-autocorrelations computed per second
+ 14 processors,    8388608 elements,   4047.32 mega-autocorrelations computed per second
+ 16 processors,    8388608 elements,   4454.16 mega-autocorrelations computed per second
+ 18 processors,    8388608 elements,   4832.06 mega-autocorrelations computed per second
+ 20 processors,    8388608 elements,   4925.61 mega-autocorrelations computed per second
+ 22 processors,    8388608 elements,   5317.93 mega-autocorrelations computed per second
+ 24 processors,    8388608 elements,   5873.35 mega-autocorrelations computed per second
+ 26 processors,    8388608 elements,   6334.14 mega-autocorrelations computed per second
+ 28 processors,    8388608 elements,   6436.71 mega-autocorrelations computed per second
+ 30 processors,    8388608 elements,   6385.75 mega-autocorrelations computed per second
+ 32 processors,    8388608 elements,   5894.19 mega-autocorrelations computed per second
