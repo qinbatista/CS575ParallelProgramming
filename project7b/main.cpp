@@ -148,18 +148,18 @@ main( int argc, char *argv[ ] )
 			if( dst == BOSS )
 				continue;
 
-			MPI_Send( &BigSignal[dst*PPSize], PPSize+MAXSHIFTS, MPI_FLOAT, dst, 0, MPI_COMM_WORLD);
+			            MPI_Send( &BigSignal[dst*PPSize], PPSize+MAXSHIFTS, MPI_FLOAT, dst, 0, MPI_COMM_WORLD);
 		}
 	}
 	else
 	{
-		MPI_Recv( PPSignal, PPSize+MAXSHIFTS, MPI_FLOAT, BOSS, 0, MPI_COMM_WORLD, &status );
+		        MPI_Recv( PPSignal, PPSize+MAXSHIFTS, MPI_FLOAT, BOSS, 0, MPI_COMM_WORLD, &status );
 	}
 
 	// each processor does its own autocorrelation:
 
 	DoOneLocalAutocorrelation( me );
-	//fprintf( stderr, "Node %3d returned from DoOneLocalAutocorrelation( )\n", me );
+
 	// each processor sends its sums back to the BOSS:
 
 	if( me == BOSS )
@@ -171,9 +171,9 @@ main( int argc, char *argv[ ] )
 	}
 	else
 	{
-		MPI_Send( PPSums, MAXSHIFTS, MPI_FLOAT, BOSS, 0, MPI_COMM_WORLD);
+		        MPI_Send( PPSums, MAXSHIFTS, MPI_FLOAT, BOSS, 0, MPI_COMM_WORLD);
 	}
-	//fprintf(stderr, "********************************************************");
+
 	// receive the sums and add them into the overall sums:
 
 	if( me == BOSS )
@@ -184,7 +184,7 @@ main( int argc, char *argv[ ] )
 			if( src == BOSS )
 				continue;
 
-			MPI_Recv( tmpSums, MAXSHIFTS, MPI_FLOAT, src, 0, MPI_COMM_WORLD, &status);
+			            MPI_Recv( tmpSums, MAXSHIFTS, MPI_FLOAT, src, 0, MPI_COMM_WORLD, &status);
 			for( int s = 0; s < MAXSHIFTS; s++ )
 				BigSums[s] += tmpSums[s];
 		}
